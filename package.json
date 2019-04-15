@@ -1,0 +1,35 @@
+{
+  "name": "StocktakerApp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test tape src/tests/*.test.js | tap-spec",
+    "start": "NODE_ENV=start node src/server.js",
+    "live": "NODE_ENV=start nodemon src/server.js",
+    "build_db": "NODE_ENV=build node src/databases/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jameslevine/StocktakerApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jameslevine/StocktakerApp/issues"
+  },
+  "homepage": "https://github.com/jameslevine/StocktakerApp#readme",
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "nodemon": "^1.18.11",
+    "supertest": "^4.0.2",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.10.1"
+  },
+  "dependencies": {
+    "env2": "^2.2.2",
+    "pg": "^7.9.0",
+    "query-string": "^6.4.2"
+  }
+}
