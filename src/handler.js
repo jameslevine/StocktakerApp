@@ -5,6 +5,9 @@ const getSales = require("./queries/getSales");
 const getProducts = require("./queries/getProducts");
 const postProducts = require("./queries/postProducts");
 const postSales = require("./queries/postSales");
+const postStockTake = require("./queries/postStockTake");
+const deleteProduct = require("./queries/deleteProduct");
+const deleteSales = require("./queries/deleteSales");
 const urlMod = require("url");
 
 const handlerHome = (res) => {
@@ -21,11 +24,8 @@ const handlerHome = (res) => {
 };
 
 const handlerPublic = (req, res) => {
-  // console.log("this is the handlerPublic");
   const url = req.url;
-  // console.log("this is the url", url);
   const extension = path.extname(url);
-  // console.log("this is the extension", extension);
   const extensionType = {
   ".html": "text/html",
   ".css": "text/css",
@@ -72,36 +72,94 @@ const handlerGetProducts = (req, res) => {
 }
 
 const handlerPostSale = (req, res) => {
-  // console.log('this is handlerPostSale');
   let data = "";
     req.on("data", chunk => {
       data += chunk;
-      console.log(data);
     });
     req.on("end", () => {
-      console.log('this is the data', data)
       const result = querystring.parse(data);
-      console.log('this is the parsed data', result);
+      console.log('this is the result', result);
+      postSales(result, err => {
+        if (err) console.log(err);
+        res.writeHead(302, { Location: "/" });
+        res.end();
+      });
       res.writeHead(302, { Location: "/" });
       res.end();
 });
 };
 
 const handlerPostProduct = (req, res) => {
-  // console.log('this is handlerPostProduct');
   let data = "";
     req.on("data", chunk => {
       data += chunk;
-      console.log(data);
     });
     req.on("end", () => {
-      console.log('this is the data', data)
       const result = querystring.parse(data);
-      console.log('this is the parsed data', result);
-      // postData.checkIn(name, colour, gender, (err, res) => {
-        // if (err) console.log(err);
-        // res.writeHead(302, { Location: "/" });
-        // res.end();
+      console.log('this is the product post', result);
+      postProducts(result, err => {
+        if (err) console.log(err);
+        res.writeHead(302, { Location: "/" });
+        res.end();
+      });
+      res.writeHead(302, { Location: "/" });
+      res.end();
+    });
+};
+
+const handlerDeleteProduct = (req, res) => {
+  const deleteId = req.url.split("=")[1];
+  deleteProduct(deleteId, err => {
+    if (err) console.log(err);
+    res.writeHead(302, { Location: "/" });
+    res.end();
+  });
+  res.writeHead(302, { Location: "/" });
+  res.end();
+};
+
+const handlerDeleteSales = (req, res) => {
+  const deleteId = req.url.split("=")[1];
+  deleteSales(deleteId, err => {
+    if (err) console.log(err);
+    res.writeHead(302, { Location: "/" });
+    res.end();
+  });
+  res.writeHead(302, { Location: "/" });
+  res.end();
+};
+
+const handlerPostStockTake = (req, res) => {
+  let data = "";
+    req.on("data", chunk => {
+      data += chunk;
+    });
+    req.on("end", () => {
+      const result = querystring.parse(data);
+      console.log('this is the inventory stocktake', result);
+      console.log('key', Object.keys(result)[0]);
+      console.log('value', Object.values(result)[0]);
+      console.log('key length', Object.keys(result).length);
+      console.log('value length', Object.values(result).length);
+      // result.map(obj => {
+      //   console.log(obj);
+      // });
+      for (let i=0; i<(Object.values(result).length)-1; i++) {
+      const newInventoryValue = Object.values(result)[i];
+      console.log(newInventoryValue.length);
+      const productId = Object.keys(result)[i];
+      if (newInventoryValue.length !== 0) {
+      postStockTake(productId, newInventoryValue, err => {
+        if (err) console.log(err);
+        res.writeHead(302, { Location: "/" });
+        res.end();
+      });
+    };
+    };
+      // postStockTake(result, err => {
+      //   if (err) console.log(err);
+      //   res.writeHead(302, { Location: "/" });
+      //   res.end();
       // });
       res.writeHead(302, { Location: "/" });
       res.end();
@@ -114,5 +172,8 @@ module.exports = {
   handlerGetSales,
   handlerGetProducts,
   handlerPostSale,
-  handlerPostProduct
+  handlerPostProduct,
+  handlerPostStockTake,
+  handlerDeleteProduct,
+  handlerDeleteSales
 }
