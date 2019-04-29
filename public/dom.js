@@ -98,3 +98,84 @@ const updateProductList = json => {
 };
 
 window.addEventListener("load", getProductsFunc);
+
+const modalLogin = document.getElementById('myModalLogin');
+const btnLogin = document.getElementById("login");
+const spanLogin = document.getElementById('close_login');
+const modalRegister = document.getElementById('myModalRegister');
+const btnRegister = document.getElementById("register");
+const btnLogout = document.getElementById("logout");
+const btnLogout = document.getElementById("logout");
+const spanRegister = document.getElementById('close_register');
+const mainPage = document.getElementById('mainpage_body');
+const mainPageContainer = document.getElementById('mainpage_container');
+
+btnLogin.addEventListener('click', () => {
+  modalLogin.style.display = "block";
+  modalRegister.style.display = "none";
+});
+
+spanLogin.onclick = () => {
+  modalLogin.style.display = "none";
+};
+
+btnRegister.addEventListener('click', function() {
+  modalRegister.style.display = "block";
+  modalLogin.style.display = "none";
+});
+
+spanRegister.onclick = function() {
+  modalRegister.style.display = "none";
+};
+
+window.onclick = function(event) {
+  if (event.target == modalLogin || event.target == modalRegister) {
+    modalLogin.style.display = "none";
+    modalRegister.style.display = "none";
+  }
+}
+
+const authCheckFunc = () => {
+  console.log("authCheckFunc triggered")
+  fetch("/authcheck")
+  .then(res => res.json())
+  .then(json => { if (json === false) {
+    console.log("User is not logged in!");
+    logoutUpdate();
+  } else {
+    console.log("User is logged in!");
+    loginUpdate();
+};
+});
+};
+
+btnLogout.addEventListener('click', () => {
+  console.log("logout clicked");
+  fetch("/logout")
+  .then(res => res.json())
+  .then(json => {
+    console.log('this is the json', json);
+  })
+    window.location.reload();
+    authCheckFunc();
+});
+
+window.addEventListener("load", authCheckFunc);
+
+const logoutUpdate = () => {
+  console.log("logoutUpdate triggered");
+  btnLogin.style.display = "inline-block";
+  btnRegister.style.display = "inline-block";
+  btnLogout.style.display = "none";
+  mainPage.style.display = "none";
+  mainPageContainer.style.display = "block";
+};
+
+const loginUpdate = () => {
+  console.log("loginUpdate triggered");
+  btnLogin.style.display = "none";
+  btnRegister.style.display = "none";
+  btnLogout.style.display = "inline-block";
+  mainPage.style.display = "block";
+  mainPageContainer.style.display = "none";
+}

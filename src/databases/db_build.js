@@ -8,7 +8,6 @@ if (process.env.NODE_ENV == "test")
   sqlPath = path.join(__dirname, "db_build_test.sql");
 
 const sql = fs.readFileSync(sqlPath).toString();
-
 const runDbBuild = cb => dbConnection.query(sql, cb);
 
 module.exports = runDbBuild;
