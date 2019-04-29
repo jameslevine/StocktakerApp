@@ -6,6 +6,56 @@
     <link rel="stylesheet" href="./public/main.css">
   </head>
   <body>
+    <header>
+      <nav class="navbar">
+        <img class="navbar_logo" src="./../public/assets/logoone.png" width="50px" height="50px" alt="stock logo showing stock in a warehouse">
+        <ul class="navbar_menu">
+          <li class="navbar_menu__item"><a href="#">Home</a></li>
+          <li class="navbar_menu__item" id="login">Login</li>
+          <li class="navbar_menu__item" id="register">Register</li>
+          <li class="navbar_menu__item" id="logout">Logout</li>
+        </ul>
+      </nav>
+    </header>
+    <section>
+      <div id="myModalLogin" class="modal">
+      <div class="modal-content">
+  <span id="close_login">&times;</span>
+  <p>Enter your login details below.</p><br>
+  <form class="" action="/loginuser" method="post">
+    <label for="username">Username:</label>
+<input type="text" name="username" value="" autocomplete="username"><br>
+<label for="loginpassword">Password:</label>
+<input type="password" name="loginpassword" value="" autocomplete="current-password"><br>
+<button type="submit" name="button" id="modal_login__submitbutton">Login</button>
+  </form>
+</div>
+</div>
+    </section>
+    <section>
+      <div id="myModalRegister" class="modal">
+      <div class="modal-content">
+  <span id="close_register">&times;</span>
+  <p>Please register below.</p>
+  <form class="" action="/createuser" method="post">
+  <label for="firstname">First Name:</label>
+  <input type="text" name="firstname" value="" autocomplete="given-name"><br>
+  <label for="lastname">Last Name:</label>
+  <input type="text" name="lastname" value="" autocomplete="family-name"><br>
+  <label for="username">Username:</label>
+  <input type="text" name="username" value="" autocomplete="username"><br>
+  <label for="loginpassword">Password:</label>
+  <input type="password" name="loginpassword" value="" autocomplete="new-password"><br>
+  <label for="loginpasswordconfirm">Confirm Password:</label>
+  <input type="password" name="loginpasswordconfirm" value="" autocomplete="new-password"><br>
+  <button type="submit" name="button" id="modal_register__submitbutton">Register</button>
+    </form>
+</div>
+</div>
+    </section>
+    <div id="mainpage_container" style="background: url('https://images.unsplash.com/photo-1464979681340-bdd28a61699e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80') no-repeat fixed center; height: 100vh;">
+    </div>
+    <div id="mainpage_body">
     <h1>Stocktaker App</h1>
     <h2>Stock List</h2>
     <table id="product-table">
@@ -68,6 +118,7 @@
     <input type="text" name="sale_price" value="" placeholder="Enter Price/unit" required>
     <button type="submit" name="button">Add Sale</button>
     </form>
+    </div>
     <!-- <button type="button" name="button" onclick="myFunc()"></button> -->
     <script type="text/javascript" src="./public/dom.js"></script>
   </body>

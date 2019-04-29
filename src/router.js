@@ -12,6 +12,10 @@ const router = (request, response) => {
     handler.handlerGetSales(request, response);
   } else if (url.includes('/getproducts')) {
     handler.handlerGetProducts(request, response);
+  } else if (url.includes('/logout')) {
+    handler.handlerLogout(request, response);
+  } else if (url.includes('/authcheck')) {
+    handler.handlerAuthCheck(request, response);
   } else {
   return;
   }
@@ -26,6 +30,10 @@ const router = (request, response) => {
     handler.handlerDeleteSales(request, response);
   } else if (url.includes('/poststocktake')) {
     handler.handlerPostStockTake(request, response);
+  } else if (url.includes('/loginuser')) {
+    handler.handlerLoginUser(request, response);
+  } else if (url.includes('/createuser')) {
+    handler.handlerCreateUser(request, response);
   } else {
     return;
   }

@@ -7,7 +7,7 @@
     "test": "NODE_ENV=test tape src/tests/*.test.js | tap-spec",
     "start": "NODE_ENV=start node src/server.js",
     "live": "NODE_ENV=start nodemon src/server.js",
-    "build_db": "NODE_ENV=build node src/databases/build.js"
+    "build_db": "node src/databases/build.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,9 @@
     "tape": "^4.10.1"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "env2": "^2.2.2",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^7.9.0",
     "query-string": "^6.4.2"
   }

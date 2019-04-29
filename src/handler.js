@@ -8,6 +8,11 @@ const postSales = require("./queries/postSales");
 const postStockTake = require("./queries/postStockTake");
 const deleteProduct = require("./queries/deleteProduct");
 const deleteSales = require("./queries/deleteSales");
+const postUser = require("./queries/postUser");
+const getUser = require("./queries/getUser");
+const hashPass = require("./scripts/hash");
+const compareHash = require("./scripts/compareHash");
+const genToken = require("./scripts/generateJWT");
 const urlMod = require("url");
 
 const handlerHome = (res) => {
@@ -136,17 +141,8 @@ const handlerPostStockTake = (req, res) => {
     });
     req.on("end", () => {
       const result = querystring.parse(data);
-      console.log('this is the inventory stocktake', result);
-      console.log('key', Object.keys(result)[0]);
-      console.log('value', Object.values(result)[0]);
-      console.log('key length', Object.keys(result).length);
-      console.log('value length', Object.values(result).length);
-      // result.map(obj => {
-      //   console.log(obj);
-      // });
       for (let i=0; i<(Object.values(result).length)-1; i++) {
       const newInventoryValue = Object.values(result)[i];
-      console.log(newInventoryValue.length);
       const productId = Object.keys(result)[i];
       if (newInventoryValue.length !== 0) {
       postStockTake(productId, newInventoryValue, err => {
@@ -156,15 +152,85 @@ const handlerPostStockTake = (req, res) => {
       });
     };
     };
-      // postStockTake(result, err => {
-      //   if (err) console.log(err);
-      //   res.writeHead(302, { Location: "/" });
-      //   res.end();
-      // });
       res.writeHead(302, { Location: "/" });
       res.end();
     });
 }
+
+const handlerLoginUser = (req, res) => {
+  let data = "";
+    req.on("data", chunk => {
+      data += chunk;
+    });
+    req.on("end", () => {
+      const result = querystring.parse(data);
+      // console.log("login result", result.username);
+      getUser(result.username, (error, response) => {
+        if (error) return(error);
+        hashPass(result.loginpassword, (errr, ress) => {
+          if (errr) return(errr);
+          compareHash(result.loginpassword, response[0].password, (errrr, resss) => {
+            if (errrr) return(errrr);
+            if (resss === true) {
+              genToken({ username: result.username, logged_in: true }).then(
+              token => {
+                res.writeHead(302, { "set-cookie": `stocktaker=${token}; max-age=9000; HttpOnly`, Location: "/" });
+                res.end();
+              });
+          } else {
+            res.writeHead(400, { "content-type": "text/html" });
+            res.end("incorrect password");
+          }
+        });
+          });
+        });
+      });
+};
+
+const handlerCreateUser = (req, res) => {
+  // console.log("this is the register request", req);
+  let data = "";
+    req.on("data", chunk => {
+      data += chunk;
+    });
+    req.on("end", () => {
+      const result = querystring.parse(data);
+      if (result.loginpassword === result.loginpasswordconfirm) {
+      hashPass(result.loginpassword, (err, response) => {
+        if (err) return(err);
+        const hashedpassword = response;
+        postUser(hashedpassword, result, (error, responsetwo) => {
+          if (err) return(err);
+          console.log(responsetwo)
+        })
+      });
+    } else {
+      console.log("Passwords do not match");
+    };
+    });
+  res.writeHead(302, { Location: "/" });
+  res.end();
+};
+
+const handlerLogout = (req, res) => {
+  console.log("handlerLogout function triggered")
+  res.writeHead(302, { "set-cookie": `stocktaker=0; max-age=0; HttpOnly`, Location: "/" });
+  res.end();
+}
+
+const handlerAuthCheck = (req, res) => {
+  console.log(req.headers.cookie);
+  if (!(req.headers.cookie)) {
+    const message = "cookies not set!"
+    const data = JSON.stringify(false)
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(data);
+  } else {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end("true");
+  };
+};
+
 
 module.exports = {
   handlerHome,
@@ -175,5 +241,9 @@ module.exports = {
   handlerPostProduct,
   handlerPostStockTake,
   handlerDeleteProduct,
-  handlerDeleteSales
+  handlerDeleteSales,
+  handlerCreateUser,
+  handlerLoginUser,
+  handlerLogout,
+  handlerAuthCheck
 }
