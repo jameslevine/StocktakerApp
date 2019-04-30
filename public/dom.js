@@ -105,7 +105,6 @@ const spanLogin = document.getElementById('close_login');
 const modalRegister = document.getElementById('myModalRegister');
 const btnRegister = document.getElementById("register");
 const btnLogout = document.getElementById("logout");
-const btnLogout = document.getElementById("logout");
 const spanRegister = document.getElementById('close_register');
 const mainPage = document.getElementById('mainpage_body');
 const mainPageContainer = document.getElementById('mainpage_container');
