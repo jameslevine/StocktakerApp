@@ -169,8 +169,9 @@ const handlerLoginUser = (req, res) => {
         if (error) return(error);
         hashPass(result.loginpassword, (errr, ress) => {
           if (errr) return(errr);
-          compareHash(result.loginpassword, response[0].password, (errrr, resss) => {
+          compareHash(result.loginpassword, ress, (errrr, resss) => {
             if (errrr) return(errrr);
+            console.log(resss);
             if (resss === true) {
               genToken({ username: result.username, logged_in: true }).then(
               token => {
