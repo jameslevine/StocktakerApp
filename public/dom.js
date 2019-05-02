@@ -70,7 +70,7 @@ const updateProducts = json => {
 
 const updateStockTake = json => {
   json.map(obj => {
-    console.log(obj.id);
+    console.log("this is the object", obj.id);
     const tableRow = document.createElement("tr");
     const tableDataButton = document.createElement("td");
     const stockInput = document.createElement("input");

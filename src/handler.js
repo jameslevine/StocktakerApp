@@ -166,10 +166,17 @@ const handlerLoginUser = (req, res) => {
       const result = querystring.parse(data);
       // console.log("login result", result.username);
       getUser(result.username, (error, response) => {
-        if (error) return(error);
+        console.log("response from database with getUser", response);
+        // if (response === []) {
+        //   console.log("nothing is in database");
+        //   return
+          // res.writeHead(302, { Location: "/" });
+          // res.end();
+        // }
+        if (error) return(error, "this is getUser response error handler.js Line 169");
         hashPass(result.loginpassword, (errr, ress) => {
           if (errr) return(errr);
-          compareHash(result.loginpassword, ress, (errrr, resss) => {
+          compareHash(result.loginpassword, response[0], (errrr, resss) => {
             if (errrr) return(errrr);
             console.log(resss);
             if (resss === true) {
@@ -179,11 +186,12 @@ const handlerLoginUser = (req, res) => {
                 res.end();
               });
           } else {
-            res.writeHead(400, { "content-type": "text/html" });
-            res.end("incorrect password");
+            console.log("password is incorrect");
+            res.writeHead(302, { Location: "/" });
+            res.end();
           }
         });
-          });
+        });
         });
       });
 };
