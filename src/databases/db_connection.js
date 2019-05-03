@@ -5,6 +5,8 @@ require("env2")("./config.env");
 
 let DB_URL = process.env.DATABASE_URL;
 
+console.log(DB_URL);
+
 // if (process.env.NODE_ENV === "test") {
 //   DATABASE_URL = process.env.TEST_DB_URL;
 // }
