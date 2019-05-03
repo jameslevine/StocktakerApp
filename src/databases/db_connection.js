@@ -3,7 +3,7 @@ const { Pool } = require("pg");
 const url = require("url");
 require("env2")("./config.env");
 
-let DB_URL = process.env.DATABASE_URL || process.env.DB_URL;
+let DB_URL = process.env.DATABASE_URL || process.env.DB_URL || postgres://zwalumsfrveuma:59c09969867ca12ab302dfc2c22ea6b8c8ce2171bb9482c89f7d32fe653016d3@ec2-54-227-245-146.compute-1.amazonaws.com:5432/d53tagt7rlu2p;
 
 // if (process.env.NODE_ENV === "test") {
 //   DATABASE_URL = process.env.TEST_DB_URL;
